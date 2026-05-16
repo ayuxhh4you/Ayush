@@ -6,7 +6,12 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 # =========================
 # BOT TOKEN
 # =========================
-TOKEN = "8823653086:AAFFecnpQ-tTiOQTlrRizihBy7HzfB-LYT8"
+
+TOKEN = os.getenv("BOT_TOKEN")
+
+HF_TOKEN = os.getenv("HF_TOKEN")
+
+ADMIN_ID = 5529660709
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -247,39 +252,31 @@ def handle_photo(message):
         # Get highest quality image
         photo = message.photo[-1]
 
-        # Get file info from Telegram
+        # Get file info
         file_info = bot.get_file(photo.file_id)
 
-        # Download file
+        # Download image
         downloaded_file = bot.download_file(file_info.file_path)
 
-        # Create screenshots folder if not exists
+        # Create folder
         if not os.path.exists("screenshots"):
             os.makedirs("screenshots")
 
-        # Save image locally
+        # Save image
         file_path = f"screenshots/{message.from_user.id}.jpg"
 
         with open(file_path, "wb") as new_file:
             new_file.write(downloaded_file)
 
-        # Ask for wallet
-        msg = bot.send_message(
-            message.chat.id,
-            """
-✅ Payment screenshot saved successfully.
 
-📥 Please enter your RECEIVER ERC20 USDT address:
-"""
-        )
-
-        bot.register_next_step_handler(msg, save_wallet)
 
     except Exception as e:
+
         bot.send_message(
             message.chat.id,
             f"❌ Error saving screenshot:\n{e}"
         )
+
     
 
     # Ask for ERC20 wallet
@@ -303,25 +300,21 @@ def save_wallet(message):
 
     username = message.from_user.username or "NoUsername"
 
-    # Send wallet to admin
-    bot.send_message(
-        ADMIN_ID,
-        f"""
-💰 USER ERC20 ADDRESS
+    # Save wallet locally
+    data = {
+        "username": username,
+        "user_id": message.from_user.id,
+        "wallet": wallet
+    }
 
-👤 User: @{username}
-🆔 ID: {message.from_user.id}
+    with open("wallets.txt", "a", encoding="utf-8") as f:
+        f.write(json.dumps(data) + "\n")
 
-🏦 Wallet:
-{wallet}
-"""
-    )
-
-    # Confirmation to user
+    # Confirmation
     bot.send_message(
         message.chat.id,
         """
-YOUR ORDER HAS BEEN PLACED SUCCESSFULLY
+✅ YOUR ORDER HAS BEEN PLACED SUCCESSFULLY
 
 ⏳ Processing Time: 1 - 4 Hours
 
