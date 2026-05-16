@@ -1,10 +1,12 @@
 import telebot
+import os
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # =========================
 # BOT TOKEN
 # =========================
 TOKEN = "8823653086:AAFFecnpQ-tTiOQTlrRizihBy7HzfB-LYT8"
+F_TOKEN = os.getenv("HF_TOKEN")
 import json
 
 # =========================
@@ -21,7 +23,7 @@ bot = telebot.TeleBot(TOKEN)
 # =========================
 # ACCESS KEYS
 # =========================
-valid_keys = ["AYUSH123", "VIP2026", "ACCESS777"]
+valid_keys = ["GTA7821", "VICE4509", "SAN9922", "CJ2901", "GROVE6644", "BALLAS7710", "JETPACK22", "RHINO6619", "GODMODE55", "NITRO1109", "FASTRUN88", "TREVER611", "MICHAEL18", "FRANK5502", "GTAONLINE", "DRIFT8890", "STEALTH66", "HEADSHOT2", "CHEAT555", "BOOST3310", "TURBO8821", "ROCKSTAR1", "MISSION50", "LEVEL6631", "SERVER882", "VALID7700", "PREMIUM44", "EPIC1199", "ULTRA7714", "FIVEM6615", "ROLE8828", "ELITE9920", "ACCESS110", "KEY7731", "BETA4419", "PRO5523", "TOP6627", "XP8818", "CASH2205", "MOD7715", "DEV4413", "FINAL9999", "LOS7788", "GTAX9900", "CHEAT8112", "RACE6618", "LOW7712", "OPEN1189", "MOD5528", "CAR4411", "INFER2290", "BANS7717", "BUFF5509", "SULT6622", "COMET8891", "ADDER7710", "ZEN1112", "KUR7729", "AKUMA4402", "JET8812", "DROP1180", "ADMIN1101", "MASTER773", "LUX9928", "MEGA8826", "FREE4400", "RAMP3301", "SKY2200", "ARMOR9988", "AMMO6633", "FLY6610", "CHASE1181", "MONEY6401", "NOCOPS91", "SUPER5578", "DRIVE1299", "BOOST7719", "MISSION66", "NIGHT9911", "WORLD2209", "GTARP8802", "VCS2201", "LIB9931", "CHEAT1182", "SPEED8811", "KEY2208", "MAX1091", "RUN5505", "PLAY7711", "HACK5520", "RIDER9091", "CODE7710", "GAMER882", "POWER663", "ULTRA999", "VIP2026", "ACCESS777"]
 used_keys = []
 
 # =========================
@@ -195,20 +197,77 @@ USDT BEP20:
             "🌐 Darkweb section coming soon"
         )
 
+
+
+
 # =========================
 # SCREENSHOT UPLOAD
 # =========================
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
 
+    # Get highest quality image
+    photo = message.photo[-1].file_id
+
+    # Forward screenshot to admin
+    ADMIN_ID = usdtstoreinn_bot  # <-- PUT YOUR TELEGRAM USER ID
+
+    bot.send_photo(
+        ADMIN_ID,
+        photo,
+        caption=f"""
+📸 New Payment Screenshot
+
+👤 User: @{message.from_user.username}
+🆔 ID: {message.from_user.id}
+"""
+    )
+
+    # Ask for ERC20 wallet
+    msg = bot.send_message(
+        message.chat.id,
+        """
+✅ Payment screenshot received.
+
+📥 Please enter your RECEIVER ERC20 USDT address:
+"""
+    )
+
+    bot.register_next_step_handler(msg, save_wallet)
+
+
+# =========================
+# SAVE ERC20 ADDRESS
+# =========================
+def save_wallet(message):
+
+    wallet = message.text
+
+    ADMIN_ID = 123456789  # <-- YOUR TELEGRAM ID
+
+    # Send wallet to admin
+    bot.send_message(
+        ADMIN_ID,
+        f"""
+💰 USER ERC20 ADDRESS
+
+👤 User: @{message.from_user.username}
+🆔 ID: {message.from_user.id}
+
+🏦 Wallet:
+{wallet}
+"""
+    )
+
+    # Confirmation to user
     bot.send_message(
         message.chat.id,
         """
 ✅ YOUR ORDER HAS BEEN PLACED SUCCESSFULLY
 
-⏳ You will get your FLASH USDT between 1 - 4 hours.
+⏳ Processing Time: 1 - 4 Hours
 
-🙏 THANKS FOR VISITING
+🙏 Thanks for visiting
 """
     )
 
