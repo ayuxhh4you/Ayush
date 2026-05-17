@@ -1,0 +1,5 @@
+{"username": "AyuxhhO", "user_id": 5529660709, "wallet": "Adress"}
+{"username": "AyuxhhO", "user_id": 5529660709, "wallet": "/start"}
+{"username": "AyuxhhO", "user_id": 5529660709, "wallet": "ghdjsga"}
+{"username": "AyuxhhO", "user_id": 5529660709, "wallet": "Ayusu"}
+{"username": "AyuxhhO", "user_id": 5529660709, "wallet": "jhgc"}
